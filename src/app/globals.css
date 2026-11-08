@@ -1,0 +1,1022 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* 春季为 SSR / 无脚本回退；夏秋冬由 `html.season-*` 覆盖 */
+  :root {
+    --font-serif-stack: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC",
+      Georgia, serif;
+    --paper-fiber-opacity: 0.03;
+    --paper-noise-opacity: 0.02;
+    --radius: 0.75rem;
+    --sidebar-collapsed: 4rem;
+    --sidebar-expanded: 15rem;
+    --xai-drawer-width: 18.75rem;
+    /* 春令 · 淡雅竹青（略压深一层，衬流动粒子与天幕） */
+    --background: #e5efe8;
+    --foreground: #152822;
+    --card: rgba(255, 255, 255, 0.74);
+    --card-foreground: #152822;
+    --popover: rgba(255, 255, 255, 0.93);
+    --popover-foreground: #152822;
+    --primary: #3d6b5c;
+    --primary-foreground: #f5faf8;
+    --secondary: #d4e8df;
+    --secondary-foreground: #1e342c;
+    --muted: #ddece4;
+    --muted-foreground: #3d5a4e;
+    --accent: #b8d9cc;
+    --accent-foreground: #1a2e28;
+    --destructive: #b42318;
+    --destructive-foreground: #fff7f7;
+    --border: rgba(61, 107, 92, 0.14);
+    --input: rgba(61, 107, 92, 0.12);
+    --ring: #3d6b5c;
+    --season-accent: #4a7c6a;
+    --canvas-vignette: rgba(61, 107, 92, 0.07);
+    --glass-fill: rgba(255, 255, 255, 0.46);
+    --glass-stroke: rgba(255, 255, 255, 0.55);
+    --glass-highlight: rgba(255, 255, 255, 0.36);
+    --app-bg-base: #eaf4ef;
+    --app-bg-radial-a: rgba(90, 155, 132, 0.2);
+    --app-bg-radial-b: rgba(165, 208, 188, 0.3);
+    --sidebar-tint: rgba(61, 107, 92, 0.07);
+    --xai-tint: rgba(61, 107, 92, 0.05);
+    /* 气韵背景 hint（QiFlow 与 Atmosphere 季节同步） */
+    --qi-spring: #a8c4b8;
+    --qi-summer: #b22222;
+    --qi-autumn: #c5a059;
+    --qi-winter: #1a1c1e;
+    /* 莫兰迪天幕锚色：春宣纸质 */
+    --morandi-sky-top: #dce8e2;
+    --morandi-sky-bottom: #121614;
+  }
+
+  html {
+    scroll-padding-top: max(5.5rem, env(safe-area-inset-top, 0px));
+    /* 避免 100vw / 子元素取整在右侧露出 body 浅色「缝」 */
+    overflow-x: hidden;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-noto-serif), var(--font-serif-stack);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    letter-spacing: 0.14em;
+  }
+
+  h2 {
+    letter-spacing: 0.13em;
+  }
+
+  h3,
+  h4 {
+    letter-spacing: 0.11em;
+    font-weight: 500;
+  }
+
+  @media (max-width: 1023px) {
+    html {
+      scroll-padding-top: max(4.25rem, env(safe-area-inset-top, 0px));
+    }
+  }
+
+  html.season-spring {
+    --morandi-sky-top: #d0dfd6;
+    --morandi-sky-bottom: #121614;
+  }
+
+  html[data-season="winter"] {
+    --paper-fiber-opacity: 0.04;
+    --paper-noise-opacity: 0.024;
+  }
+
+  html[data-season="winter"] .paper-grain-fiber {
+    mix-blend-mode: soft-light;
+  }
+
+  html[data-season="winter"] .paper-grain-noise {
+    mix-blend-mode: overlay;
+    opacity: var(--paper-noise-opacity);
+  }
+
+  /* Summer — 晚霞朱极暗部 + 朱砂流光 */
+  html.season-summer {
+    --morandi-sky-top: #2d1616;
+    --morandi-sky-bottom: #140a0a;
+    --background: #f2ebe4;
+    --foreground: #2a1814;
+    --card: rgba(255, 252, 248, 0.78);
+    --card-foreground: #2a1814;
+    --popover: rgba(255, 253, 250, 0.95);
+    --popover-foreground: #2a1814;
+    --primary: #9b2226;
+    --primary-foreground: #fff8f6;
+    --secondary: #f3e4dc;
+    --secondary-foreground: #4a1f1f;
+    --muted: #f0e6de;
+    --muted-foreground: #6b4540;
+    --accent: #ffd8cf;
+    --accent-foreground: #5c1a1a;
+    --destructive: #9b2226;
+    --destructive-foreground: #fff8f6;
+    --border: rgba(155, 34, 38, 0.12);
+    --input: rgba(155, 34, 38, 0.1);
+    --ring: #9b2226;
+    --season-accent: #9b2226;
+    --canvas-vignette: rgba(155, 34, 38, 0.05);
+    --glass-fill: rgba(255, 250, 246, 0.5);
+    --glass-stroke: rgba(255, 255, 255, 0.55);
+    --glass-highlight: rgba(255, 220, 200, 0.25);
+    --app-bg-base: #f2ebe4;
+    --app-bg-radial-a: rgba(255, 180, 140, 0.18);
+    --app-bg-radial-b: rgba(255, 210, 180, 0.28);
+    --sidebar-tint: rgba(155, 34, 38, 0.05);
+    --xai-tint: rgba(155, 34, 38, 0.04);
+  }
+
+  /* Autumn — 银杏金 + 炭灰金属感 */
+  html.season-autumn {
+    --morandi-sky-top: #26221a;
+    --morandi-sky-bottom: #12100c;
+    --background: #ede6d8;
+    --foreground: #2c2418;
+    --card: rgba(255, 252, 245, 0.72);
+    --card-foreground: #2c2418;
+    --popover: rgba(255, 253, 248, 0.94);
+    --popover-foreground: #2c2418;
+    --primary: #b08d57;
+    --primary-foreground: #1f160c;
+    --secondary: #e8dcc4;
+    --secondary-foreground: #3a2f1f;
+    --muted: #ebe2d2;
+    --muted-foreground: #6a5a42;
+    --accent: #d4c4a8;
+    --accent-foreground: #2a2215;
+    --destructive: #a34c2e;
+    --destructive-foreground: #fffaf6;
+    --border: rgba(176, 141, 87, 0.2);
+    --input: rgba(176, 141, 87, 0.14);
+    --ring: #b08d57;
+    --season-accent: #b08d57;
+    --canvas-vignette: rgba(176, 141, 87, 0.08);
+    --glass-fill: rgba(255, 248, 235, 0.48);
+    --glass-stroke: rgba(255, 255, 255, 0.45);
+    --glass-highlight: rgba(255, 230, 190, 0.35);
+    --app-bg-base: #ebe3d2;
+    --app-bg-radial-a: rgba(220, 180, 110, 0.35);
+    --app-bg-radial-b: rgba(255, 235, 200, 0.4);
+    --sidebar-tint: rgba(176, 141, 87, 0.08);
+    --xai-tint: rgba(176, 141, 87, 0.06);
+  }
+
+  /* Winter — 极深墨色 · 微冷高光 */
+  html.season-winter {
+    --morandi-sky-top: #101214;
+    --morandi-sky-bottom: #020203;
+    --background: #0a0b0d;
+    --foreground: #e6e4e0;
+    --card: rgba(22, 24, 28, 0.58);
+    --card-foreground: #e6e4e0;
+    --popover: rgba(18, 20, 24, 0.94);
+    --popover-foreground: #e6e4e0;
+    --primary: #9a9da8;
+    --primary-foreground: #0a0b0d;
+    --secondary: #1c1e22;
+    --secondary-foreground: #d4d2cc;
+    --muted: #141618;
+    --muted-foreground: #8a8884;
+    --accent: #2a2c30;
+    --accent-foreground: #f0eeea;
+    --destructive: #e07068;
+    --destructive-foreground: #1a0806;
+    --border: rgba(200, 200, 210, 0.12);
+    --input: rgba(200, 200, 210, 0.1);
+    --ring: #c8c6c2;
+    --season-accent: #2c2e32;
+    --canvas-vignette: rgba(0, 0, 0, 0.42);
+    --glass-fill: rgba(24, 26, 30, 0.48);
+    --glass-stroke: rgba(255, 255, 255, 0.07);
+    --glass-highlight: rgba(255, 255, 255, 0.04);
+    --app-bg-base: #08090a;
+    --app-bg-radial-a: rgba(48, 52, 58, 0.35);
+    --app-bg-radial-b: rgba(18, 20, 24, 0.88);
+    --sidebar-tint: rgba(120, 120, 128, 0.08);
+    --xai-tint: rgba(120, 120, 128, 0.06);
+  }
+
+  /* —— 禅意光效 · 宣纸白：略提纸纤维与微暖，不替代季令主色 —— */
+  html[data-zen="xuan"] {
+    --paper-fiber-opacity: 0.055;
+    --paper-noise-opacity: 0.028;
+  }
+
+  /* 冬月 + 宣纸：以春令展纸色为底，保夜读不被迫进入「冬令全暗」；仍保留冬 data-season 以粒子等逻辑 */
+  html.season-winter[data-zen="xuan"] {
+    --background: #e2ebe5;
+    --foreground: #152822;
+    --card: rgba(255, 255, 255, 0.76);
+    --card-foreground: #152822;
+    --popover: rgba(255, 255, 255, 0.94);
+    --popover-foreground: #152822;
+    --primary: #3d6b5c;
+    --primary-foreground: #f5faf8;
+    --secondary: #d0e3da;
+    --secondary-foreground: #1e342c;
+    --muted: #d3e3db;
+    --muted-foreground: #3d5148;
+    --accent: #b0d2c4;
+    --accent-foreground: #1a2e28;
+    --destructive: #b42318;
+    --destructive-foreground: #fff7f7;
+    --border: rgba(61, 107, 92, 0.14);
+    --input: rgba(61, 107, 92, 0.1);
+    --ring: #3d6b5c;
+    /* 冬令里 accent 可略作灰青以别春季 */
+    --season-accent: #3f6b5a;
+    --canvas-vignette: rgba(61, 107, 92, 0.08);
+    --glass-fill: rgba(255, 255, 255, 0.5);
+    --glass-stroke: rgba(255, 255, 255, 0.52);
+    --glass-highlight: rgba(255, 255, 255, 0.32);
+    --app-bg-base: #e4f0e9;
+    --app-bg-radial-a: rgba(88, 150, 128, 0.2);
+    --app-bg-radial-b: rgba(155, 200, 180, 0.3);
+    --sidebar-tint: rgba(61, 107, 92, 0.07);
+    --xai-tint: rgba(61, 107, 92, 0.05);
+    --morandi-sky-top: #cad8d0;
+    --morandi-sky-bottom: #121614;
+  }
+
+  /* 水墨暗：中性炭灰为底、季色只点在主/环上；字阶提亮，避免深绿叠深绿 */
+  html.season-spring[data-zen="ink"],
+  html.season-summer[data-zen="ink"],
+  html.season-autumn[data-zen="ink"],
+  html.season-winter[data-zen="ink"] {
+    --background: #222322;
+    --foreground: #f5f2eb;
+    --card: rgba(48, 50, 48, 0.95);
+    --card-foreground: #faf8f3;
+    --popover: rgba(40, 42, 40, 0.98);
+    --popover-foreground: #f5f2eb;
+    --primary: color-mix(in srgb, var(--season-accent) 62%, #6e7c74);
+    --primary-foreground: #0a0a09;
+    --secondary: #343633;
+    --secondary-foreground: #ece8df;
+    --muted: #2f3130;
+    --muted-foreground: #ccc4b4;
+    --accent: #3a3d3a;
+    --accent-foreground: #f8f6f0;
+    --destructive: #c75a4e;
+    --destructive-foreground: #120807;
+    --border: rgba(255, 255, 255, 0.11);
+    --input: rgba(255, 255, 255, 0.1);
+    --ring: color-mix(in srgb, var(--season-accent) 48%, #9aa39a);
+    --canvas-vignette: rgba(0, 0, 0, 0.22);
+    --glass-fill: rgba(42, 44, 42, 0.75);
+    --glass-stroke: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(80, 84, 80, 0.28);
+    /* 整页基色略提亮，径向为中性雾，不再用高比例季色染底 */
+    --app-bg-base: #181a18;
+    --app-bg-radial-a: color-mix(in srgb, var(--season-accent) 14%, rgba(70, 74, 72, 0.42));
+    --app-bg-radial-b: color-mix(in srgb, var(--season-accent) 8%, rgba(28, 30, 28, 0.92));
+    --sidebar-tint: rgba(255, 255, 255, 0.04);
+    --xai-tint: rgba(255, 255, 255, 0.03);
+    --morandi-sky-top: #2a2c2a;
+    --morandi-sky-bottom: #101110;
+  }
+
+  /** 无 View Transitions 时：同帧换肤 + 字/底缓动 */
+  html.zen-theme-tweening,
+  html.zen-theme-tweening body {
+    transition:
+      color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body {
+    @apply min-h-screen text-foreground antialiased;
+    color: var(--foreground);
+    background-color: var(--app-bg-base);
+    background-image:
+      radial-gradient(
+        1200px circle at 12% -10%,
+        var(--app-bg-radial-a),
+        transparent 55%
+      ),
+      radial-gradient(
+        900px circle at 88% 0%,
+        var(--app-bg-radial-b),
+        transparent 50%
+      ),
+      linear-gradient(180deg, var(--background), var(--app-bg-base));
+    /* fixed 在部分 Chromium/Windows 组合下与合成层叠化，易在边缘出现细缝或条带 */
+    background-attachment: scroll;
+  }
+}
+
+@layer components {
+  .module-header-card {
+    @apply rounded-3xl border border-border px-4 py-3 sm:px-5 sm:py-4;
+    border-color: color-mix(in srgb, var(--border) 85%, transparent);
+    background:
+      linear-gradient(
+        175deg,
+        color-mix(in srgb, var(--card) 88%, rgba(255, 255, 255, 0.22)),
+        color-mix(in srgb, var(--background) 76%, rgba(255, 255, 255, 0.08))
+      );
+    box-shadow:
+      0 14px 36px rgba(25, 34, 30, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  }
+
+  .module-icon-pill {
+    @apply rounded-2xl border border-border;
+    border-color: color-mix(in srgb, var(--border) 78%, transparent);
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--season-accent) 16%, rgba(255, 255, 255, 0.75)),
+      rgba(255, 255, 255, 0.42)
+    );
+    box-shadow:
+      0 8px 18px rgba(36, 50, 44, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.58);
+  }
+
+  .module-title {
+    @apply font-serif text-2xl font-medium tracking-[0.11em] text-foreground sm:text-[1.78rem];
+  }
+
+  .module-route-wrap {
+    @apply rounded-2xl border border-border p-1.5;
+    border-color: color-mix(in srgb, var(--border) 78%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--background) 72%, transparent),
+        color-mix(in srgb, var(--background) 56%, transparent)
+      );
+    box-shadow: 0 10px 24px rgba(22, 33, 29, 0.07);
+  }
+
+  .module-card {
+    @apply rounded-2xl border backdrop-blur-xl backdrop-saturate-[1.04];
+    border-color: color-mix(in srgb, var(--glass-stroke) 86%, transparent);
+    background: color-mix(in srgb, var(--glass-fill) 92%, rgba(255, 255, 255, 0.26));
+    box-shadow:
+      0 12px 28px rgba(22, 33, 29, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+
+  .module-card-soft {
+    @apply rounded-2xl border backdrop-blur-md backdrop-saturate-[1.03];
+    border-color: color-mix(in srgb, var(--glass-stroke) 74%, transparent);
+    background: color-mix(in srgb, var(--glass-fill) 80%, rgba(255, 255, 255, 0.18));
+  }
+
+  .module-stat-card {
+    @apply rounded-2xl border p-4 backdrop-blur-md backdrop-saturate-[1.03];
+    border-color: color-mix(in srgb, var(--glass-stroke) 72%, transparent);
+    background: color-mix(in srgb, var(--glass-fill) 82%, rgba(255, 255, 255, 0.2));
+    box-shadow: 0 8px 20px rgba(22, 33, 29, 0.06);
+  }
+
+  .module-tab-link {
+    @apply relative whitespace-nowrap rounded-lg px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition duration-200;
+  }
+
+  .module-tab-link:hover {
+    @apply text-foreground;
+    background: color-mix(in srgb, var(--background) 80%, var(--muted) 20%);
+  }
+
+  .module-tab-link-active {
+    @apply text-foreground;
+  }
+
+  .module-tab-link-active::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+    height: 2px;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--season-accent) 76%, var(--primary));
+    opacity: 0.9;
+  }
+
+  /**
+   * 天幕动态：必须用原生 CSS animation 驱动 background-position / opacity。
+   * Framer Motion 对 backgroundPosition 的多关键帧字符串常无法正确插值，肉眼会像「完全不动」。
+   */
+  .atmosphere-bloom-a {
+    will-change: transform;
+    animation:
+      atmosphere-bloom-a 9s linear infinite,
+      atmosphere-breathe-soft 18s ease-in-out infinite;
+  }
+
+  .atmosphere-qiflow-drift {
+    will-change: transform;
+    animation:
+      atmosphere-qiflow-drift 10s ease-in-out infinite,
+      atmosphere-qiflow-breathe 22s ease-in-out infinite;
+  }
+
+  .atmosphere-bloom-b {
+    will-change: background-position, opacity;
+    animation: none;
+  }
+
+  .atmosphere-bloom-c {
+    will-change: background-position, opacity;
+    animation: none;
+  }
+
+  .atmosphere-accent-a {
+    will-change: background-position, opacity;
+    animation: none;
+  }
+
+  .atmosphere-accent-b {
+    will-change: background-position, opacity;
+    animation: none;
+  }
+
+  @keyframes atmosphere-bloom-a {
+    0%,
+    100% {
+      transform: translate3d(-14%, -8%, 0);
+    }
+    50% {
+      transform: translate3d(14%, 8%, 0);
+    }
+  }
+
+  @keyframes atmosphere-qiflow-drift {
+    0%,
+    100% {
+      transform: translate3d(-30px, 14px, 0);
+    }
+    25% {
+      transform: translate3d(34px, -16px, 0);
+    }
+    50% {
+      transform: translate3d(-28px, 24px, 0);
+    }
+    75% {
+      transform: translate3d(30px, -12px, 0);
+    }
+  }
+
+  @keyframes atmosphere-breathe-soft {
+    0%,
+    100% {
+      opacity: 0.58;
+    }
+    50% {
+      opacity: 0.66;
+    }
+  }
+
+  @keyframes atmosphere-qiflow-breathe {
+    0%,
+    100% {
+      opacity: 0.82;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes atmosphere-bloom-b {
+    0%,
+    100% {
+      background-position: 76% 58%;
+      opacity: 0.43;
+    }
+    33% {
+      background-position: 30% 34%;
+      opacity: 0.43;
+    }
+    66% {
+      background-position: 58% 72%;
+      opacity: 0.43;
+    }
+  }
+
+  @keyframes atmosphere-bloom-c {
+    0%,
+    100% {
+      background-position: 40% 36%;
+      opacity: 0.34;
+    }
+    50% {
+      background-position: 56% 60%;
+      opacity: 0.34;
+    }
+  }
+
+  @keyframes atmosphere-accent-a {
+    0%,
+    100% {
+      background-position: 26% 30%;
+      opacity: 0.14;
+    }
+    50% {
+      background-position: 50% 54%;
+      opacity: 0.14;
+    }
+  }
+
+  @keyframes atmosphere-accent-b {
+    0%,
+    100% {
+      background-position: 70% 28%;
+      opacity: 0.12;
+    }
+    50% {
+      background-position: 42% 56%;
+      opacity: 0.12;
+    }
+  }
+
+  /*
+   * 注意：这里不再对 prefers-reduced-motion 强制关闭天幕动画。
+   * 用户明确需要可见动态，因此保持运行。
+   */
+
+  /* 玉石化雾面：低乳白透 + 深 backdrop，无亮硬边，极细内高光 */
+  .glass-panel {
+    @apply rounded-3xl border-0 bg-white/[0.03] backdrop-blur-3xl backdrop-saturate-[1.1];
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.05),
+      0 22px 56px rgba(0, 0, 0, 0.16);
+  }
+
+  .glass-topbar {
+    @apply glass-panel;
+  }
+
+  .floating-sidebar-shell {
+    @apply glass-panel;
+    background: linear-gradient(
+        165deg,
+        rgba(255, 255, 255, 0.05),
+        color-mix(in srgb, var(--sidebar-tint) 55%, transparent)
+      ),
+      rgba(255, 255, 255, 0.03);
+  }
+
+  .main-canvas-inner {
+    @apply relative rounded-2xl border-0 sm:rounded-3xl;
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--card) 88%, transparent),
+        color-mix(in srgb, var(--background) 92%, transparent)
+      ),
+      var(--card);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.05),
+      0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  @media (max-width: 639px) {
+    .main-canvas-inner {
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.05),
+        0 8px 28px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .xai-drawer-shell {
+    @apply glass-panel;
+    background: linear-gradient(
+        200deg,
+        rgba(255, 255, 255, 0.04),
+        color-mix(in srgb, var(--xai-tint) 60%, transparent)
+      ),
+      rgba(255, 255, 255, 0.03);
+  }
+
+  .museum-ambient {
+    --museum-bubble-a: color-mix(in srgb, var(--season-accent) 55%, transparent);
+    --museum-bubble-b: color-mix(in srgb, var(--primary) 40%, transparent);
+    --museum-bubble-c: color-mix(in srgb, var(--ring) 35%, transparent);
+    --museum-nebula-core: color-mix(in srgb, var(--season-accent) 22%, #030308);
+  }
+
+  /** 水墨下粒子/气泡：压饱和，偏银灰烟，少与底色素叠成「脏绿」 */
+  html[data-zen="ink"] .museum-ambient {
+    --museum-bubble-a: color-mix(in srgb, var(--season-accent) 22%, rgba(140, 142, 138, 0.2));
+    --museum-bubble-b: color-mix(in srgb, var(--primary) 18%, rgba(120, 124, 120, 0.16));
+    --museum-bubble-c: rgba(100, 104, 100, 0.14);
+    --museum-nebula-core: color-mix(in srgb, var(--season-accent) 12%, rgba(24, 26, 24, 0.6));
+  }
+
+  /** 典雅清新：纸本光域上的淡墨展陈（覆盖深色玻璃默认值） */
+  .museum-airy .museum-glass-nav {
+    @apply rounded-full border border-white/70 shadow-[0_8px_32px_rgba(42,50,44,0.06)] backdrop-blur-xl backdrop-saturate-[1.05];
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.88),
+      rgba(252, 253, 252, 0.76)
+    );
+    box-shadow:
+      0 10px 36px rgba(42, 50, 44, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  /* 禅意 · 水墨：顶栏玻璃偏浅一层，与底拉开；登录字色贴近 --foreground */
+  html[data-zen="ink"] .museum-airy .museum-glass-nav {
+    @apply backdrop-saturate-[1.02];
+    border-color: rgba(255, 255, 255, 0.14);
+    background: linear-gradient(
+      198deg,
+      rgba(52, 54, 52, 0.94) 0%,
+      rgba(36, 38, 36, 0.9) 100%
+    );
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  html[data-zen="ink"] .museum-liquid-login-link {
+    background: linear-gradient(180deg, #3a3d3a, #2a2c2a);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--foreground);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  
+
+  html[data-zen="ink"] .museum-liquid-login-link:hover {
+    color: var(--foreground);
+    background: linear-gradient(180deg, #454845, #333634);
+  }
+
+  html[data-zen="ink"] .museum-airy .museum-glass-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+      170deg,
+      rgba(50, 52, 50, 0.96) 0%,
+      rgba(36, 38, 36, 0.94) 100%
+    );
+    box-shadow:
+      0 10px 36px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /** 右上角登录：液态光晕（与主导航同属 fixed 顶栏） */
+  .museum-liquid-login-shell {
+    position: relative;
+    isolation: isolate;
+    padding: 2px;
+  }
+
+  .museum-liquid-login-blob {
+    position: absolute;
+    border-radius: 58% 42% 62% 38% / 48% 52% 48% 52%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(0.35px);
+  }
+
+  .museum-liquid-login-blob-a {
+    inset: -6px -4px -6px -4px;
+    background: linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--season-accent) 42%, #ffffff),
+      color-mix(in srgb, var(--primary) 28%, #f0fdf4),
+      rgba(255, 255, 255, 0.55)
+    );
+    opacity: 0.72;
+    animation: museum-liquid-morph-a 7.5s ease-in-out infinite;
+  }
+
+  .museum-liquid-login-blob-b {
+    inset: -10px -8px -4px -8px;
+    background: radial-gradient(
+      circle at 30% 30%,
+      color-mix(in srgb, var(--season-accent) 35%, transparent),
+      transparent 62%
+    );
+    opacity: 0.45;
+    animation: museum-liquid-morph-b 9.2s ease-in-out infinite;
+  }
+
+  .museum-liquid-login-link {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(252, 253, 252, 0.78)
+    );
+    box-shadow:
+      0 6px 22px rgba(42, 50, 44, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    border: 1px solid color-mix(in srgb, var(--season-accent) 22%, rgba(255, 255, 255, 0.85));
+  }
+
+  @keyframes museum-liquid-morph-a {
+    0%,
+    100% {
+      border-radius: 58% 42% 62% 38% / 48% 52% 48% 52%;
+      transform: rotate(0deg) scale(1);
+    }
+    33% {
+      border-radius: 38% 62% 48% 52% / 58% 38% 52% 48%;
+      transform: rotate(-6deg) scale(1.04);
+    }
+    66% {
+      border-radius: 52% 48% 36% 64% / 42% 58% 48% 52%;
+      transform: rotate(5deg) scale(0.98);
+    }
+  }
+
+  @keyframes museum-liquid-morph-b {
+    0%,
+    100% {
+      border-radius: 42% 58% 52% 48% / 52% 48% 42% 58%;
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      border-radius: 62% 38% 44% 56% / 40% 60% 54% 46%;
+      transform: translate(2px, -3px) scale(1.08);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .museum-liquid-login-blob-a,
+    .museum-liquid-login-blob-b {
+      animation: none;
+      transform: none;
+      border-radius: 9999px;
+    }
+  }
+
+  .museum-glass-nav {
+    @apply border-0 bg-white/[0.04] shadow-[0_16px_56px_rgba(0,0,0,0.38)] backdrop-blur-[120px] backdrop-saturate-[1.12] rounded-full;
+    box-shadow:
+      0 16px 56px rgba(0, 0, 0, 0.38),
+      inset 0 0 20px rgba(255, 255, 255, 0.02);
+  }
+
+  .museum-airy .museum-glass-card {
+    @apply relative overflow-hidden rounded-3xl border border-white/85 backdrop-blur-xl backdrop-saturate-[1.06];
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.82),
+      rgba(250, 252, 250, 0.68)
+    );
+    box-shadow:
+      0 14px 44px rgba(42, 50, 44, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    transition:
+      border-color 0.45s ease,
+      box-shadow 0.5s ease,
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .museum-airy .museum-glass-card::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(45, 90, 39, 0.06),
+      transparent
+    );
+    opacity: 1;
+  }
+
+  .museum-airy .museum-glass-card::after {
+    border-color: rgba(45, 58, 50, 0.06);
+  }
+
+  html[data-zen="ink"] .museum-airy .museum-glass-card::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(200, 205, 200, 0.1),
+      transparent
+    );
+  }
+
+  html[data-zen="ink"] .museum-airy .museum-glass-card::after {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .museum-airy .museum-glass-card:hover {
+    box-shadow:
+      0 20px 56px rgba(42, 50, 44, 0.09),
+      0 0 0 1px color-mix(in srgb, var(--season-accent) 12%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  }
+
+  /** 时令区块：不另铺大色块，与固定天幕同一底；卡片略透以露出背景气韵 */
+  .museum-airy #daily-season .museum-glass-card {
+    @apply border-white/60 backdrop-blur-md backdrop-saturate-[1.04];
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.52),
+      rgba(255, 255, 255, 0.3)
+    );
+    box-shadow:
+      0 8px 28px rgba(42, 50, 44, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  }
+
+  .museum-airy #daily-season .museum-glass-card:hover {
+    box-shadow:
+      0 14px 40px rgba(42, 50, 44, 0.07),
+      0 0 0 1px color-mix(in srgb, var(--season-accent) 10%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+
+  /** 水墨时令卡：#id 选择器会压过通用水墨卡，需单独拉亮表面与字对比 */
+  html[data-zen="ink"] .museum-airy #daily-season .museum-glass-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+      168deg,
+      rgba(50, 52, 50, 0.96) 0%,
+      rgba(40, 42, 40, 0.94) 100%
+    );
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  html[data-zen="ink"] .museum-airy #daily-season .museum-glass-card:hover {
+    box-shadow:
+      0 12px 36px rgba(0, 0, 0, 0.24),
+      0 0 0 1px color-mix(in srgb, var(--season-accent) 18%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .museum-glass-card {
+    @apply relative overflow-hidden rounded-3xl border-0 bg-white/[0.03] backdrop-blur-[120px] backdrop-saturate-[1.12];
+    box-shadow:
+      0 22px 64px rgba(0, 0, 0, 0.45),
+      inset 0 0 20px rgba(255, 255, 255, 0.02);
+    transition:
+      border-color 0.5s ease,
+      box-shadow 0.55s ease,
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .museum-glass-card::before {
+    content: "";
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.16),
+      transparent
+    );
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  /* 古籍边线：内框极淡界线约 10% 白 */
+  .museum-glass-card::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border-radius: 1.25rem;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+
+  .museum-glass-card:hover {
+    box-shadow:
+      0 28px 88px rgba(0, 0, 0, 0.52),
+      0 0 48px color-mix(in srgb, var(--season-accent) 14%, transparent),
+      inset 0 0 24px rgba(255, 255, 255, 0.03);
+  }
+
+  .museum-time-capsule {
+    @apply museum-glass-card rounded-3xl;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /** 中文展陈标题：衬线 + 疏朗字距（清新不过挤） */
+  .museum-cn-title {
+    @apply font-serif font-medium tracking-[0.18em];
+  }
+
+  /**
+   * 博物馆页水平留白：刘海屏安全区 + 与 sm/lg 断点协调的侧栏距
+   */
+  .museum-gutter-x {
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  }
+
+  @media (min-width: 640px) {
+    .museum-gutter-x {
+      padding-left: max(2rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .museum-gutter-x {
+      padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  /** 工作台：安全区内边距（与 AppShell 叠加使用） */
+  .app-safe-padding {
+    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  }
+
+  @media (min-width: 640px) {
+    .app-safe-padding {
+      padding-top: max(1rem, env(safe-area-inset-top, 0px));
+      padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+      padding-left: max(1rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /** 逻辑链 SVG 连线流光 */
+  .logic-flow-stroke {
+    animation: logic-flow-dash 2.4s linear infinite;
+  }
+
+  @keyframes logic-flow-dash {
+    to {
+      stroke-dashoffset: -72;
+    }
+  }
+
+  /** 登录页 · 玉石感玻璃 */
+  .jade-login-card {
+    background: linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0.22) 42%,
+      rgba(255, 255, 255, 0.12) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 28px 64px rgba(42, 50, 44, 0.1),
+      0 0 0 1px color-mix(in srgb, var(--season-accent) 8%, transparent);
+    backdrop-filter: blur(28px) saturate(1.25);
+  }
+
+  html[data-season="winter"] .jade-login-card {
+    background: linear-gradient(
+      155deg,
+      rgba(32, 34, 40, 0.55) 0%,
+      rgba(24, 26, 30, 0.4) 50%,
+      rgba(18, 20, 24, 0.35) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 28px 64px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* 禅意：整页换肤的 View Transitions 根快照（与 `withZenViewTransition` 同节奏） */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
